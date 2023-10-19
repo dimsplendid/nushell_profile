@@ -92,5 +92,9 @@ $env.NU_PLUGIN_DIRS = [
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 $env.EDITOR = code
 
+# conda configuration
 export use ~/Documents/nu/scripts/conda.nu
 $env.Path = ($env.Path | split row (char esep) | prepend 'C:/Users/dimsp/miniconda3/Scripts')
+
+# git auto completion
+export use ~/Documents/nu/scripts/git-completions.nu
