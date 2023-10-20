@@ -99,18 +99,8 @@ $env.Path = ($env.Path | split row (char esep) | prepend 'C:/Users/dimsp/minicon
 # git auto completion
 source ~/Documents/nu/scripts/git-completions.nu
 
-export def "cargo search" [ query: string, --limit=10] { 
-    ^cargo search $query --limit $limit
-    | lines 
-    | each { 
-        |line| if ($line | str contains "#") { 
-            $line | parse --regex '(?P<name>.+) = "(?P<version>.+)" +# (?P<description>.+)' 
-        } else { 
-            $line | parse --regex '(?P<name>.+) = "(?P<version>.+)"' 
-        } 
-    } 
-    | flatten
-}
+# cargo auto completion
+source ~/Documents/nu/scripts/cargo-completions.nu
 
 # starship pretty prompt
 use ~\.cache\starship\init.nu
