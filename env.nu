@@ -17,35 +17,35 @@
 #     $path_segment | str replace --all (char path_sep) $"($separator_color)/($path_color)"
 # }
 
-$env.STARSHIP_SHELL = "nu"
+# $env.STARSHIP_SHELL = "nu"
 
-def create_left_prompt [] {
-    starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
-}
+# def create_left_prompt [] {
+#     starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
+# }
 
-def create_right_prompt [] {
-    # create a right prompt in magenta with green separators and am/pm underlined
-    let time_segment = ([
-        (ansi reset)
-        (ansi magenta)
-        (date now | format date '%x %X %p') # try to respect user's locale
-    ] | str join | str replace --regex --all "([/:])" $"(ansi green)${1}(ansi magenta)" |
-        str replace --regex --all "([AP]M)" $"(ansi magenta_underline)${1}")
+# def create_right_prompt [] {
+#     # create a right prompt in magenta with green separators and am/pm underlined
+#     let time_segment = ([
+#         (ansi reset)
+#         (ansi magenta)
+#         (date now | format date '%x %X %p') # try to respect user's locale
+#     ] | str join | str replace --regex --all "([/:])" $"(ansi green)${1}(ansi magenta)" |
+#         str replace --regex --all "([AP]M)" $"(ansi magenta_underline)${1}")
 
-    let last_exit_code = if ($env.LAST_EXIT_CODE != 0) {([
-        (ansi rb)
-        ($env.LAST_EXIT_CODE)
-    ] | str join)
-    } else { "" }
+#     let last_exit_code = if ($env.LAST_EXIT_CODE != 0) {([
+#         (ansi rb)
+#         ($env.LAST_EXIT_CODE)
+#     ] | str join)
+#     } else { "" }
 
-    ([$last_exit_code, (char space), $time_segment] | str join)
-}
+#     ([$last_exit_code, (char space), $time_segment] | str join)
+# }
 
 # Use nushell functions to define your right and left prompt
-$env.PROMPT_COMMAND = {|| create_left_prompt }
+# $env.PROMPT_COMMAND = {|| create_left_prompt }
 # FIXME: This default is not implemented in rust code as of 2023-09-08.
 # $env.PROMPT_COMMAND_RIGHT = {|| create_right_prompt }
-$env.PROMPT_COMMAND_RIGHT = ""
+# $env.PROMPT_COMMAND_RIGHT = ""
 
 # The prompt indicators are environmental variables that represent
 # the state of the prompt
@@ -56,10 +56,10 @@ $env.PROMPT_COMMAND_RIGHT = ""
 
 # The prompt indicators are environmental variables that represent
 # the state of the prompt
-$env.PROMPT_INDICATOR = ""
-$env.PROMPT_INDICATOR_VI_INSERT = ": "
-$env.PROMPT_INDICATOR_VI_NORMAL = "〉"
-$env.PROMPT_MULTILINE_INDICATOR = "::: "
+# $env.PROMPT_INDICATOR = ""
+# $env.PROMPT_INDICATOR_VI_INSERT = ": "
+# $env.PROMPT_INDICATOR_VI_NORMAL = "〉"
+# $env.PROMPT_MULTILINE_INDICATOR = "::: "
 
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
@@ -93,8 +93,24 @@ $env.NU_PLUGIN_DIRS = [
 $env.EDITOR = code
 
 # conda configuration
-export use ~/Documents/nu/scripts/conda.nu
+use ~/Documents/nu/scripts/conda.nu
 $env.Path = ($env.Path | split row (char esep) | prepend 'C:/Users/dimsp/miniconda3/Scripts')
 
 # git auto completion
 source ~/Documents/nu/scripts/git-completions.nu
+
+export def "cargo search" [ query: string, --limit=10] { 
+    ^cargo search $query --limit $limit
+    | lines 
+    | each { 
+        |line| if ($line | str contains "#") { 
+            $line | parse --regex '(?P<name>.+) = "(?P<version>.+)" +# (?P<description>.+)' 
+        } else { 
+            $line | parse --regex '(?P<name>.+) = "(?P<version>.+)"' 
+        } 
+    } 
+    | flatten
+}
+
+# starship pretty prompt
+use ~\.cache\starship\init.nu
