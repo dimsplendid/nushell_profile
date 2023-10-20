@@ -5,3 +5,8 @@
 3. need to check the script path:
     1. conda.nu: for conda env
     2. git-completions.nu: for git completion
+  
+## Reference
+
+> [!WARNING]
+> TODO: add profile source
