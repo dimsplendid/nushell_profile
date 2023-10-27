@@ -104,3 +104,8 @@ source ~/Documents/nu/scripts/cargo-completions.nu
 
 # starship pretty prompt
 use ~\.cache\starship\init.nu
+
+# Setup Neo Vim
+
+alias vi = nvim # variant command for nvim
+alias vim = nvim # variant command for nvim
