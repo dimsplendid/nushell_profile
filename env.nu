@@ -105,6 +105,9 @@ source ~/Documents/nu/scripts/cargo-completions.nu
 # starship pretty prompt
 use ~\.cache\starship\init.nu
 
+# zoxide config
+source ~/Documents/nu/scripts/zoxide.nu
+
 # Setup Neo Vim
 
 alias vi = nvim # variant command for nvim
